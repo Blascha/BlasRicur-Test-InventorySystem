@@ -85,6 +85,8 @@ public class Inventory : MonoBehaviour , IScreenObject
          * | 7 | | 8 | | 9 |
          * |---| |---| |---|
          */
+
+        //OnChangeSymbol();
     }
 
     public void OnChangeSymbol()
@@ -177,8 +179,12 @@ public class Inventory : MonoBehaviour , IScreenObject
         statsInfo.text = inventoryStats;
 
         //I actually set the Stats
+        ModelPlayer.Instance.SetNewHP(newPlayerLifePlants);
+        ModelPlayer.Instance.SetDamageMultiplyier(newDamageFire);
         ModelPlayer.Instance.SetNewROFMultiplyier(newRateOfFireElectricity);
-
+        ModelPlayer.Instance.SetNewPlayerKnockback(newPlayerKnockbackEarth);
+        ModelPlayer.Instance.SetNewEnemyKnockback(newEnemyKnockBackWater);
+        ModelPlayer.Instance.SetNewShotResilience(newShotResilienceRock);
     }
     string GetStrengthColor(float strength)
     {
