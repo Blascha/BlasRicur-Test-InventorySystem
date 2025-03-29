@@ -11,6 +11,7 @@ public static class SpawnManager
     public static void EnemyDeath(GameObject gameObject)
     {
         Enemies.Remove(gameObject);
+
         if(Enemies.Count <= 0)
         {
             Debug.Log("New Wave");
@@ -19,6 +20,10 @@ public static class SpawnManager
             //I would use JSon, but I dont have much time to create a perfect system.
             PlayerPrefs.SetInt("Wave", Wave);
             PlayerPrefs.Save();
+            if(Wave >= 5)
+            {
+                PlayerUI.Instance.Won();
+            }
         }
     }
 
