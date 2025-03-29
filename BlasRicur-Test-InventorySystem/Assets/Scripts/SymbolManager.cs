@@ -1,18 +1,39 @@
-using System;
 using UnityEngine;
+using UnityEditor;
+using System.Collections.Generic;
 using System.Linq;
 
-public class SymbolManager : MonoBehaviour
+public static class SymbolManager
 {
     public static void FindAllSymbolTypes()
     {
-        Debug.Log("All SymbolTypes are");
+        SymbolsAndNames = new Dictionary<string, SymbolType>();
+        var allSymbolsPaths = AssetDatabase.FindAssets("t: SymbolType");
 
-        var allSymbols = AppDomain.CurrentDomain.GetAssemblies().SelectMany(assembly => assembly.GetTypes()).Where(type => type.IsSubclassOf(typeof(SymbolType))).ToArray();
-
-        foreach(var i in allSymbols)
+        foreach (var i in allSymbolsPaths)
         {
-            Debug.Log(i.Name);
+            var SOpath = AssetDatabase.GUIDToAssetPath(i);
+            var actualSymbol = AssetDatabase.LoadAssetAtPath<SymbolType>(SOpath);
+            SymbolsAndNames.Add(actualSymbol.name,actualSymbol);
         }
+    }
+
+    static Dictionary<string, SymbolType> SymbolsAndNames;
+
+    public static SymbolType GetType(string name, bool nullOrRandom = false)
+    {
+        if (SymbolsAndNames == null)
+            FindAllSymbolTypes();
+
+        if (SymbolsAndNames.ContainsKey(name))
+            return SymbolsAndNames[name];
+
+        //Maybe I want to get an exact ot maybe I made a Typo. Maybe I´m looking for one that doesn´t exist or I am looking for something
+        if (nullOrRandom)
+            return null;
+
+        //I will return a random Symbol
+        var RandomKey = SymbolsAndNames.Keys.ToArray()[Random.Range(0, SymbolsAndNames.Keys.Count - 1)];
+        return SymbolsAndNames[RandomKey];
     }
 }

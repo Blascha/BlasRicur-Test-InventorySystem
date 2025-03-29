@@ -2,15 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ControllerPlayer : MonoBehaviour , IScreenObject
+public class ControllerPlayer : MonoBehaviour, IScreenObject
 {
     [SerializeField] ModelPlayer model;
     [SerializeField] Transform cursor;
-    [SerializeField] SymbolType testType;
-    [SerializeField] SymbolType testPlantType;
+
     float lastShot;
     public float ROF;
-    public float ROFMultiplyier;
+    public float ROFMultiplyier = 1;
 
     // Start is called before the first frame update
     void Start()
@@ -22,7 +21,7 @@ public class ControllerPlayer : MonoBehaviour , IScreenObject
         model.Controler = this;
     }
 
-    bool canFire;
+    bool canFire = true;
     public void OnTurnOnScreen()
     {
         canFire = true;
@@ -41,7 +40,7 @@ public class ControllerPlayer : MonoBehaviour , IScreenObject
 
     private void Update()
     {
-        cursor.localPosition = 2 * ((Input.mousePosition/(Screen.width)) - Vector3.one * .5f) + Vector3.forward * 10;
+        cursor.localPosition = 2 * ((Input.mousePosition / (Screen.width)) - Vector3.one * .5f) + Vector3.forward * 10;
 
         if (canFire)
         {
@@ -56,19 +55,15 @@ public class ControllerPlayer : MonoBehaviour , IScreenObject
 
         if (Input.GetButtonDown("Inventory"))
         {
-            if(ScreenManager.activeScreen == ScreenManager.Screens.Menus)
+            if (ScreenManager.activeScreen == ScreenManager.Screens.Menus)
                 ScreenManager.ChangeScreen(ScreenManager.Screens.Game);
             else
                 ScreenManager.ChangeScreen(ScreenManager.Screens.Menus);
         }
 
-        if(Input.GetKeyDown(KeyCode.Alpha0))
+        if (Input.GetKeyDown(KeyCode.Alpha0))
         {
-            Inventory.Instance.MakeNewItem(testType);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            Inventory.Instance.MakeNewItem(testPlantType);
+            Inventory.Instance.MakeNewItem(SymbolManager.GetType("No Way this is a Symbol"));
         }
     }
 }

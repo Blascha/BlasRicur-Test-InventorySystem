@@ -31,11 +31,23 @@ public class Projectile : MonoBehaviour
 
         if(ShotResilience <= 0.001f)
         {
+            StartCoroutine(WaitAndDestroy());
             GetComponent<SpriteRenderer>().enabled = false;
             GetComponent<BoxCollider2D>().enabled = false;
             particles.Play();
             hitAnimator.Play("IdleVFX");
             speed = 0;
         }
+    }
+    IEnumerator Start()
+    {
+        yield return new WaitForSeconds(5);
+        Destroy(gameObject);
+    }
+
+    IEnumerator WaitAndDestroy()
+    {
+        yield return new WaitForSeconds(.5f);
+        Destroy(gameObject);
     }
 }

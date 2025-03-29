@@ -49,6 +49,7 @@ public class ModelCharacter : MonoBehaviour
 
     protected virtual void Die()
     {
+        SpawnManager.EnemyDeath(gameObject);
         Destroy(gameObject);
     }
 }

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-[RequireComponent (typeof(CanvasGroup))]
-public class Inventory : MonoBehaviour , IScreenObject
+[RequireComponent(typeof(CanvasGroup))]
+public class Inventory : MonoBehaviour, IScreenObject
 {
     public static Inventory Instance;
     CanvasGroup group;
@@ -13,6 +13,7 @@ public class Inventory : MonoBehaviour , IScreenObject
     [SerializeField] Slot[] nonEffectingSlots;
     [SerializeField] GameObject symbol;
     [SerializeField] TMP_Text statsInfo;
+    [SerializeField] bool load;
 
     public void OnTurnOffScreen()
     {
@@ -30,7 +31,7 @@ public class Inventory : MonoBehaviour , IScreenObject
     {
         WaitForSeconds wait = new WaitForSeconds(0.02f);
 
-        for(float i = 0; i <= 1; i+= 0.2f)
+        for (float i = 0; i <= 1; i += 0.2f)
         {
             group.alpha = i;
             yield return wait;
@@ -52,6 +53,33 @@ public class Inventory : MonoBehaviour , IScreenObject
 
         group.blocksRaycasts = false;
         group.interactable = false;
+    }
+
+    void Start()
+    {
+        OnChangeSymbol();
+
+        SpawnManager.NextWave += OnSave;
+
+        if (!load)
+            return;
+
+        //I will load every symbol on every slot
+        for (int i = 0; i < nonEffectingSlots.Length; i++)
+        {
+            SymbolType type = SymbolManager.GetType(PlayerPrefs.GetString("NonEffecting " + i),true);
+
+            if (type != null)
+                Inventory.Instance.MakeNewItem(type, nonEffectingSlots[i]);
+        }
+
+        for (int x = 0; x < slots.Length; x++)
+        {
+            SymbolType type = SymbolManager.GetType(PlayerPrefs.GetString($"Effecting{x}"), true);
+
+            if (type != null)
+                Inventory.Instance.MakeNewItem(type, slots[x].GetComponent<Slot>());
+        }
     }
 
     private void Awake()
@@ -85,8 +113,6 @@ public class Inventory : MonoBehaviour , IScreenObject
          * | 7 | | 8 | | 9 |
          * |---| |---| |---|
          */
-
-        //OnChangeSymbol();
     }
 
     public void OnChangeSymbol()
@@ -188,10 +214,10 @@ public class Inventory : MonoBehaviour , IScreenObject
     }
     string GetStrengthColor(float strength)
     {
-        switch(strength)
+        switch (strength)
         {
             case < 1:
-                return "<color=red>" + strength +" X</color>";
+                return "<color=red>" + strength + " X</color>";
 
             case > 1:
                 return "<color=green>" + strength + "X</color>";
@@ -201,11 +227,32 @@ public class Inventory : MonoBehaviour , IScreenObject
         }
     }
 
+    void OnSave()
+    {
+        for (int i = 0; i < nonEffectingSlots.Length; i++)
+        {
+            string save = " ";
+            if (nonEffectingSlots[i].assignedSymbol != null)
+                save = nonEffectingSlots[i].assignedSymbol.MySymbolType.name;
+
+            PlayerPrefs.SetString("NonEffecting " + i,save);
+        }
+
+        for (int x = 0; x < slots.Length; x++)
+        {
+            string save = " ";
+            if (slots[x].GetComponent<Slot>().assignedSymbol != null)
+                save = slots[x].GetComponent<Slot>().assignedSymbol.MySymbolType.name;
+
+            PlayerPrefs.SetString($"Effecting{x}", save);
+        }
+    }
+
     public void MakeNewItem(SymbolType type)
     {
-        foreach(var i in nonEffectingSlots)
+        foreach (var i in nonEffectingSlots)
         {
-            if(i.assignedSymbol == null)
+            if (i.assignedSymbol == null)
             {
                 GameObject newSymbol = Instantiate(symbol);
                 Symbol newSymbolComponent = newSymbol.GetComponent<Symbol>();
@@ -219,5 +266,19 @@ public class Inventory : MonoBehaviour , IScreenObject
                 break;
             }
         }
+    }
+
+    public void MakeNewItem(SymbolType type, Slot slot)
+    {
+
+        GameObject newSymbol = Instantiate(symbol);
+        Symbol newSymbolComponent = newSymbol.GetComponent<Symbol>();
+
+        newSymbol.transform.SetParent(transform);
+        slot.assignedSymbol = newSymbolComponent;
+
+        newSymbolComponent.SetSymbolType(type);
+        newSymbolComponent.GetComponent<RectTransform>().anchoredPosition = slot.GetComponent<RectTransform>().anchoredPosition;
+        newSymbolComponent.mySlot = slot;
     }
 }
