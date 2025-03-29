@@ -11,6 +11,14 @@ public class ControllerEnemy : MonoBehaviour
     void FixedUpdate()
     {
         Vector2 dir = (ModelPlayer.Instance.transform.position - transform.position);
+
+        RaycastHit2D hit = Physics2D.Raycast((Vector2)transform.position + dir.normalized, dir.normalized,5);
+
+        if (hit)
+        {
+            Debug.DrawRay(hit.point,hit.normal);
+        }
+
         damageCooldown += Time.fixedDeltaTime;
 
         if (dir.magnitude <= range && ROF < damageCooldown)

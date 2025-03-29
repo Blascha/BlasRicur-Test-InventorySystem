@@ -5,9 +5,19 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     [SerializeField] GameObject enemy;
-    IEnumerator Start()
+
+    void Start()
     {
-        for(int i = 0; i < 10; i++)
+        StartCoroutine(SpawnWave());
+
+        SpawnManager.NextWave += () => { StartCoroutine(SpawnWave()); }; ;
+    }
+
+    IEnumerator SpawnWave()
+    {
+        yield return new WaitForSeconds(5);
+
+        for (int i = 0; i < SpawnManager.Wave * 3; i++)
         {
             yield return new WaitForSeconds(1);
             OnSpawnEnemie(enemy);
