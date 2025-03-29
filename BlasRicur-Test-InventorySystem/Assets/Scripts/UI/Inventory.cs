@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 [RequireComponent (typeof(CanvasGroup))]
 public class Inventory : MonoBehaviour , IScreenObject
@@ -11,6 +12,7 @@ public class Inventory : MonoBehaviour , IScreenObject
     Slot[,] actualSlots;
     [SerializeField] Slot[] nonEffectingSlots;
     [SerializeField] GameObject symbol;
+    [SerializeField] TMP_Text statsInfo;
 
     public void OnTurnOffScreen()
     {
@@ -117,7 +119,7 @@ public class Inventory : MonoBehaviour , IScreenObject
 
                     //With this, I basically go to the offset of the area and affect the symbol there
                     float finalMultiplyier = 1;
-                    
+
                     var elements = (actualSymbol.elements, actualSlots[x + offset.x, y + offset.y].assignedSymbol.MySymbolType.elements);
 
                     if (SymbolType.ElementToElementEffect.ContainsKey(elements))
@@ -142,7 +144,7 @@ public class Inventory : MonoBehaviour , IScreenObject
 
                 float effect = actualSlots[x, y].actualMultiplyier;
 
-                switch(actualSymbol.elements)
+                switch (actualSymbol.elements)
                 {
                     case Elements.Fire:
                         newDamageFire *= effect;
@@ -171,7 +173,26 @@ public class Inventory : MonoBehaviour , IScreenObject
             }
         }
 
-        Debug.Log($"New Damage: {newDamageFire}</n> New Shot Resilience: {newShotResilienceRock} </n> New Rate Of Fire:{newRateOfFireElectricity} </n> New Player Life: {newPlayerLifePlants}</n> New PlayerKnovkback: {newPlayerKnockbackEarth}</n> New EnemyKnockback: {newEnemyKnockBackWater}");
+        string inventoryStats = $"HP: {GetStrengthColor(newPlayerLifePlants)}\nDamage: {GetStrengthColor(newDamageFire)}\nROF:{GetStrengthColor(newRateOfFireElectricity)} \n Player Knockback: {GetStrengthColor(newPlayerKnockbackEarth)}\n Enemy Knockback: {GetStrengthColor(newEnemyKnockBackWater)}\n Shot Resilience: {GetStrengthColor(newShotResilienceRock)}";
+        statsInfo.text = inventoryStats;
+
+        //I actually set the Stats
+        ModelPlayer.Instance.SetNewROFMultiplyier(newRateOfFireElectricity);
+
+    }
+    string GetStrengthColor(float strength)
+    {
+        switch(strength)
+        {
+            case < 1:
+                return "<color=red>" + strength +" X</color>";
+
+            case > 1:
+                return "<color=green>" + strength + "X</color>";
+
+            default:
+                return "" + strength;
+        }
     }
 
     public void MakeNewItem(SymbolType type)

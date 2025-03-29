@@ -8,6 +8,9 @@ public class ControllerPlayer : MonoBehaviour , IScreenObject
     [SerializeField] Transform cursor;
     [SerializeField] SymbolType testType;
     [SerializeField] SymbolType testPlantType;
+    float lastShot;
+    public float ROF;
+    public float ROFMultiplyier;
 
     // Start is called before the first frame update
     void Start()
@@ -16,6 +19,7 @@ public class ControllerPlayer : MonoBehaviour , IScreenObject
             model = GetComponent<ModelPlayer>();
 
         ScreenManager.AddObjectToScreen(ScreenManager.Screens.Game, this);
+        model.Controler = this;
     }
 
     bool canFire;
@@ -39,9 +43,15 @@ public class ControllerPlayer : MonoBehaviour , IScreenObject
     {
         cursor.localPosition = 2 * ((Input.mousePosition/(Screen.width)) - Vector3.one * .5f) + Vector3.forward * 10;
 
-        if (Input.GetButtonDown("Fire1") && canFire)
+        if (canFire)
         {
-            model.Fire((cursor.position - transform.position).normalized);
+            lastShot += Time.deltaTime * ROFMultiplyier;
+
+            if (Input.GetButtonDown("Fire1") && lastShot >= ROF)
+            {
+                lastShot = 0;
+                model.Fire((cursor.position - transform.position).normalized);
+            }
         }
 
         if (Input.GetButtonDown("Inventory"))

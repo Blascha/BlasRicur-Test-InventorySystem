@@ -10,11 +10,14 @@ public class ModelPlayer : MonoBehaviour
     [SerializeField] float acceleration = 5;
     [SerializeField] float maxSpeed = 5;
     [SerializeField] GameObject projectile;
+    public static ModelPlayer Instance;
+    public ControllerPlayer Controler;
 
     // Start is called before the first frame update
     void Start()
     {
         rig = GetComponent<Rigidbody2D>();
+        Instance = this;
     }
 
     public void Move(float x, float y)
@@ -29,5 +32,10 @@ public class ModelPlayer : MonoBehaviour
 
         actualProjectile.transform.position = transform.position + (Vector3)direction.normalized * .16f;
         actualProjectile.transform.up = direction;
+    }
+
+    public void SetNewROFMultiplyier(float newMultiplyier)
+    {
+        Controler.ROFMultiplyier = newMultiplyier;
     }
 }

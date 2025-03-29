@@ -17,6 +17,7 @@ public class SymbolType : ScriptableObject
 
         //Water to others
         { (Elements.Water,Elements.Fire),0.5f },
+        { (Elements.Water,Elements.Electricity),2 },
         { (Elements.Water,Elements.Plant),2 },
         { (Elements.Water,Elements.Rock),0.5f },
 
