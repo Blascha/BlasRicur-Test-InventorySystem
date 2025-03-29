@@ -124,6 +124,8 @@ public class Inventory : MonoBehaviour, IScreenObject
         float newPlayerKnockbackEarth = 1;
         float newEnemyKnockBackWater = 1;
 
+        int amountOfSymbols = 1;
+
         foreach (Slot s in actualSlots)
             s.actualMultiplyier = 1;
 
@@ -134,6 +136,8 @@ public class Inventory : MonoBehaviour, IScreenObject
             {
                 //There are empty slots, so I will skip over those
                 if (actualSlots[x, y].assignedSymbol == null) continue;
+
+                amountOfSymbols++;
 
                 //I save the symbol here
                 SymbolType actualSymbol = actualSlots[x, y].assignedSymbol.MySymbolType;
@@ -201,12 +205,12 @@ public class Inventory : MonoBehaviour, IScreenObject
             }
         }
 
-        string inventoryStats = $"HP: {GetStrengthColor(newPlayerLifePlants)}\nDamage: {GetStrengthColor(newDamageFire)}\nROF:{GetStrengthColor(newRateOfFireElectricity)} \n Player Knockback: {GetStrengthColor(newPlayerKnockbackEarth)}\n Enemy Knockback: {GetStrengthColor(newEnemyKnockBackWater)}\n Shot Resilience: {GetStrengthColor(newShotResilienceRock)}";
+        string inventoryStats = $"HP: {GetStrengthColor(newPlayerLifePlants)}\nDamage: {GetStrengthColor(amountOfSymbols * newDamageFire)}\nROF:{GetStrengthColor(newRateOfFireElectricity)} \n Player Knockback: {GetStrengthColor(newPlayerKnockbackEarth)}\n Enemy Knockback: {GetStrengthColor(newEnemyKnockBackWater)}\n Shot Resilience: {GetStrengthColor(newShotResilienceRock)}";
         statsInfo.text = inventoryStats;
 
         //I actually set the Stats
         ModelPlayer.Instance.SetNewHP(newPlayerLifePlants);
-        ModelPlayer.Instance.SetDamageMultiplyier(newDamageFire);
+        ModelPlayer.Instance.SetDamageMultiplyier(amountOfSymbols * newDamageFire);
         ModelPlayer.Instance.SetNewROFMultiplyier(newRateOfFireElectricity);
         ModelPlayer.Instance.SetNewPlayerKnockback(newPlayerKnockbackEarth);
         ModelPlayer.Instance.SetNewEnemyKnockback(newEnemyKnockBackWater);

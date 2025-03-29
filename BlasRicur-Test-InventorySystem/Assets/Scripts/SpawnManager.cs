@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class SpawnManager
 {
-    public static int Wave;
+    public static int Wave = 1;
 
     public static List<GameObject> Enemies = new List<GameObject>();
 

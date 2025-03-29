@@ -5,16 +5,21 @@ public class VisualCharacter : MonoBehaviour
 {
     [SerializeField] protected SpriteRenderer sprite;
     [SerializeField] protected Animator animator;
+    Color oldColor;
 
+    private void Start()
+    {
+        oldColor = sprite.color;
+    }
     public void Knockback(float Multiplyier)
     {
+        StopCoroutine("KnockbackAnimation");
         StartCoroutine(KnockbackAnimation(1 / Multiplyier));
     }
 
     IEnumerator KnockbackAnimation(float time = .5f)
     {
         WaitForSeconds wait = new WaitForSeconds(0.08f);
-        Color oldColor = sprite.color;
 
         for (float i = 0; i < time; i += 0.16f)
         {

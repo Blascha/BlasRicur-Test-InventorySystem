@@ -16,4 +16,4 @@ MonoBehaviour:
   effectArea:
   - {x: -1, y: 0}
   - {x: 1, y: 0}
-  sprite: {fileID: 0}
+  sprite: {fileID: 7013805676258195987, guid: 995c6412de474c14ea0bfe1aecbc7caf, type: 3}

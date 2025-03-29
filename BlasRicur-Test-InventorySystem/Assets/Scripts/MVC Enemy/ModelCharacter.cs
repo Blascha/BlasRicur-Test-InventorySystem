@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider2D))]
 public class ModelCharacter : MonoBehaviour
 {
+    [SerializeField] protected float MaxHP = 10;
     [SerializeField] protected float HP = 10;
     [SerializeField] protected float acceleration = 5;
     [SerializeField] protected float maxSpeed = 5;
@@ -50,6 +51,10 @@ public class ModelCharacter : MonoBehaviour
     protected virtual void Die()
     {
         SpawnManager.EnemyDeath(gameObject);
+
+        if (Random.Range(0, SpawnManager.Wave * 10) == 1)
+            (Instantiate(Resources.Load("Floor Symbol")) as GameObject).transform.position = transform.position;
+
         Destroy(gameObject);
     }
 }
