@@ -27,4 +27,10 @@ public class VisualPlayer : VisualCharacter
             animator.Play("Idle");
         }
     }
+
+    public void Die()
+    {
+        animator.Play("Death Anim");
+        Destroy(this);
+    }
 }

@@ -23,16 +23,34 @@ public static class ScreenManager
 
         if (screens.ContainsKey(activeScreen))
         {
-            foreach (var screenObject in screens[activeScreen])
+            var foreachLoopCollection = screens[activeScreen];
+            foreach (var screenObject in foreachLoopCollection)
+            {
+                if (screenObject is null)
+                {
+                    screens[activeScreen].Remove(screenObject);
+                    continue;
+                }
                 screenObject.OnTurnOffScreen();
+            }
         }
 
         activeScreen = newScreen;
 
         if (screens.ContainsKey(activeScreen))
         {
-            foreach (var screenObject in screens[activeScreen])
+            var foreachLoopCollection = screens[activeScreen];
+
+            foreach (var screenObject in foreachLoopCollection)
+            {
+                if (screenObject is null)
+                {
+                    screens[activeScreen].Remove(screenObject);
+                    continue;
+                }
+
                 screenObject.OnTurnOnScreen();
+            }
         }
     }
 

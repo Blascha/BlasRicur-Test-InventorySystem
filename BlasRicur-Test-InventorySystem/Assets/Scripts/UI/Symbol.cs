@@ -54,7 +54,7 @@ public class Symbol : MonoBehaviour
 
         while (true)
         {
-            rect.anchoredPosition = Input.mousePosition - Vector3.one * .5f * Screen.width;
+            rect.anchoredPosition =  (Vector2)(Input.mousePosition) - new Vector2(Screen.width,Screen.height) * .5f ;
             yield return null;
         }
     }

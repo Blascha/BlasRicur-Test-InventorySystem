@@ -82,6 +82,11 @@ public class Inventory : MonoBehaviour, IScreenObject
         }
     }
 
+    private void OnDestroy()
+    {
+        ScreenManager.RemoveObjectFromScreen(ScreenManager.Screens.Menus, this);
+    }
+
     private void Awake()
     {
         Instance = this;

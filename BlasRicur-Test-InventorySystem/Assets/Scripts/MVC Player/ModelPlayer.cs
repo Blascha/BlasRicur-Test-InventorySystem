@@ -14,20 +14,35 @@ public class ModelPlayer : ModelCharacter
     float enemyKnockbackMultiplyier = 1;
     float shotResilienceMultiplyier = 1;
 
+    bool died = false;
+
     // Start is called before the first frame update
     void Awake()
     {
         rig = GetComponent<Rigidbody2D>();
         Instance = this;
         originalMaxHP = MaxHP;
+    }
+
+    private void Start()
+    {
         StartCoroutine(ConstantlyHeal());
         PlayerUI.Instance.UpdateLife((int)MaxHP);
     }
+
     public override void Damage(float damage, Vector2 direction, float knockback = 1)
     {
+        if (died) return;
+
         HP -= damage;
 
         PlayerUI.Instance.UpdateLife((int)HP);
+
+        if(HP <= .001f)
+        {
+            Die();
+            return;
+        }
 
         onKnockback = true;
         rig.AddForce(direction.normalized / (playerKnockbackMultiplyier * knockback), ForceMode2D.Impulse);
@@ -69,6 +84,15 @@ public class ModelPlayer : ModelCharacter
             }
             yield return new WaitForFixedUpdate();
         }
+    }
+
+    protected override void Die()
+    {
+        PlayerUI.Instance.Lost();
+        died = true;
+        rig.constraints = RigidbodyConstraints2D.FreezePosition;
+        Destroy(Controler);
+        visual.Die();
     }
 
     #region Setters

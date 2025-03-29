@@ -40,7 +40,9 @@ public class ControllerPlayer : MonoBehaviour, IScreenObject
 
     private void Update()
     {
-        cursor.localPosition = 2 * ((Input.mousePosition / (Screen.width)) - Vector3.one * .5f) + Vector3.forward * 10;
+        Vector3 newMousePos = (Vector3)(2 * ((Input.mousePosition) / new Vector2(Screen.width, Screen.height) - Vector2.one * .5f)) + Vector3.forward * 10;
+        newMousePos.x *= (float)Screen.width / (float)Screen.height;
+        cursor.localPosition = newMousePos;
 
         if (canFire)
         {
