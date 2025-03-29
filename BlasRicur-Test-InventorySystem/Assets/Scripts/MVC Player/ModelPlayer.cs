@@ -95,6 +95,13 @@ public class ModelPlayer : ModelCharacter
         visual.Die();
     }
 
+    public void OnWin()
+    {
+        died = true;
+        rig.constraints = RigidbodyConstraints2D.FreezePosition;
+        Destroy(Controler);
+    }
+
     #region Setters
     public void SetNewROFMultiplyier(float newMultiplyier)
     {

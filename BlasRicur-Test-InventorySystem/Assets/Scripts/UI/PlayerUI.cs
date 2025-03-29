@@ -35,6 +35,7 @@ public class PlayerUI : MonoBehaviour
 
     public void Won()
     {
+        ModelPlayer.Instance.OnWin();
         StartCoroutine(OnWon());
     }
 

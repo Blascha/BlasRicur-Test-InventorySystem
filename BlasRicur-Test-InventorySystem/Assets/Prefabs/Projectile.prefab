@@ -50,6 +50,7 @@ MonoBehaviour:
   speed: 3
   hitAnimator: {fileID: 5874296080330485561}
   particles: {fileID: 7614670202619998879}
+  audio: {fileID: 4231707668550226317}
   Damage: 1
   ShotResilience: 1
   enemyKnockback: 3
@@ -212,6 +213,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 629a9c317bb4795429684db8ea9006a3, type: 3}
+--- !u!82 &4231707668550226317 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 4580033342000201798, guid: 629a9c317bb4795429684db8ea9006a3, type: 3}
+  m_PrefabInstance: {fileID: 375355380116853195}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4488207280026049511 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4286537370886720044, guid: 629a9c317bb4795429684db8ea9006a3, type: 3}

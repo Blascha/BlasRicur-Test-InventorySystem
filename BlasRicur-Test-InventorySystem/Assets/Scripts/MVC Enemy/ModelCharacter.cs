@@ -12,6 +12,7 @@ public class ModelCharacter : MonoBehaviour
     protected Rigidbody2D rig;
     [SerializeField] protected bool onKnockback = false;
     [SerializeField] protected VisualCharacter visual;
+    [SerializeField] ParticleSystem particles;
 
     void Awake()
     {
@@ -31,7 +32,7 @@ public class ModelCharacter : MonoBehaviour
     {
         HP -= damage;
 
-        if(HP <= 0)
+        if (HP <= 0)
         {
             Die();
             return;
@@ -52,10 +53,21 @@ public class ModelCharacter : MonoBehaviour
     protected virtual void Die()
     {
         SpawnManager.EnemyDeath(gameObject);
+        GetComponent<AudioSource>().Play();
+        particles.Play();
+        rig.constraints = RigidbodyConstraints2D.FreezeAll;
+        GetComponent<Collider2D>().enabled = false;
+        GetComponent<SpriteRenderer>().enabled = false;
 
         if (Random.Range(0, SpawnManager.Wave * 10) == 1)
             (Instantiate(Resources.Load("Floor Symbol")) as GameObject).transform.position = transform.position;
 
+        StartCoroutine(WaitToDestroy());
+    }
+
+    IEnumerator WaitToDestroy()
+    {
+        yield return new WaitForSeconds(GetComponent<AudioSource>().clip.length);
         Destroy(gameObject);
     }
 }
