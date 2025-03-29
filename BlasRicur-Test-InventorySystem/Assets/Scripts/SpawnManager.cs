@@ -15,17 +15,25 @@ public static class SpawnManager
         if(Enemies.Count <= 0)
         {
             Debug.Log("New Wave");
-            NextWave();
+            
 
             //I would use JSon, but I dont have much time to create a perfect system.
             PlayerPrefs.SetInt("Wave", Wave);
             PlayerPrefs.Save();
-            if(Wave >= 5)
+
+            if(Wave >= 10)
             {
                 PlayerUI.Instance.Won();
+                return;
             }
+
+            NextWave();
         }
     }
 
-    public static Action NextWave = () => { Wave++; };
+    public static Action NextWave = () => 
+    {
+        Wave++;
+        PlayerUI.UpdateWave();
+    };
 }

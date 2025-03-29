@@ -17,6 +17,11 @@ public class VisualCharacter : MonoBehaviour
         StartCoroutine(KnockbackAnimation(1 / Multiplyier));
     }
 
+    public virtual void Move(float x, float y)
+    {
+
+    }
+
     IEnumerator KnockbackAnimation(float time = .5f)
     {
         WaitForSeconds wait = new WaitForSeconds(0.08f);
@@ -31,5 +36,11 @@ public class VisualCharacter : MonoBehaviour
         }
 
         sprite.color = oldColor;
+    }
+
+    public void Die()
+    {
+        animator.Play("Death Anim");
+        Destroy(this);
     }
 }

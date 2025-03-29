@@ -129,7 +129,8 @@ public class Inventory : MonoBehaviour, IScreenObject
         float newPlayerKnockbackEarth = 1;
         float newEnemyKnockBackWater = 1;
 
-        int amountOfSymbols = 1;
+        Dictionary<Elements, int> amountOfEachSymbol = new Dictionary<Elements, int>();
+
 
         foreach (Slot s in actualSlots)
             s.actualMultiplyier = 1;
@@ -142,10 +143,18 @@ public class Inventory : MonoBehaviour, IScreenObject
                 //There are empty slots, so I will skip over those
                 if (actualSlots[x, y].assignedSymbol == null) continue;
 
-                amountOfSymbols++;
-
                 //I save the symbol here
                 SymbolType actualSymbol = actualSlots[x, y].assignedSymbol.MySymbolType;
+
+                //To count how many of each symbol there are
+                if (!amountOfEachSymbol.ContainsKey(actualSymbol.elements))
+                {
+                    amountOfEachSymbol.Add(actualSymbol.elements, 2);
+                }
+                else
+                {
+                    amountOfEachSymbol[actualSymbol.elements]++;
+                }
 
                 //I will affect each offset here
                 foreach (var offset in actualSymbol.effectArea)
@@ -168,6 +177,25 @@ public class Inventory : MonoBehaviour, IScreenObject
                 }
             }
         }
+
+        //I will start by adding all the symbols
+        if(amountOfEachSymbol.ContainsKey(Elements.Earth))
+            newPlayerKnockbackEarth = amountOfEachSymbol[Elements.Earth];
+
+        if (amountOfEachSymbol.ContainsKey(Elements.Electricity))
+            newRateOfFireElectricity = amountOfEachSymbol[Elements.Electricity];
+
+        if (amountOfEachSymbol.ContainsKey(Elements.Fire))
+            newDamageFire = amountOfEachSymbol[Elements.Fire];
+
+        if (amountOfEachSymbol.ContainsKey(Elements.Plant))
+            newPlayerLifePlants = amountOfEachSymbol[Elements.Plant];
+
+        if (amountOfEachSymbol.ContainsKey(Elements.Rock))
+            newShotResilienceRock = amountOfEachSymbol[Elements.Rock];
+
+        if (amountOfEachSymbol.ContainsKey(Elements.Water))
+            newEnemyKnockBackWater = amountOfEachSymbol[Elements.Water];
 
         //I will set the new stats
         for (int x = 0; x < actualSlots.GetLength(0); x++)
@@ -210,12 +238,12 @@ public class Inventory : MonoBehaviour, IScreenObject
             }
         }
 
-        string inventoryStats = $"HP: {GetStrengthColor(newPlayerLifePlants)}\nDamage: {GetStrengthColor(amountOfSymbols * newDamageFire)}\nROF:{GetStrengthColor(newRateOfFireElectricity)} \n Player Knockback: {GetStrengthColor(newPlayerKnockbackEarth)}\n Enemy Knockback: {GetStrengthColor(newEnemyKnockBackWater)}\n Shot Resilience: {GetStrengthColor(newShotResilienceRock)}";
+        string inventoryStats = $"HP: {GetStrengthColor(newPlayerLifePlants)}\n\nDamage: {GetStrengthColor(newDamageFire)}\n\nROF:{GetStrengthColor(newRateOfFireElectricity)} \n\n Player Knockback: {GetStrengthColor(newPlayerKnockbackEarth)}\n\n Enemy Knockback: {GetStrengthColor(newEnemyKnockBackWater)}\n\n Shot Resilience: {GetStrengthColor(newShotResilienceRock)}";
         statsInfo.text = inventoryStats;
 
         //I actually set the Stats
         ModelPlayer.Instance.SetNewHP(newPlayerLifePlants);
-        ModelPlayer.Instance.SetDamageMultiplyier(amountOfSymbols * newDamageFire);
+        ModelPlayer.Instance.SetDamageMultiplyier(newDamageFire);
         ModelPlayer.Instance.SetNewROFMultiplyier(newRateOfFireElectricity);
         ModelPlayer.Instance.SetNewPlayerKnockback(newPlayerKnockbackEarth);
         ModelPlayer.Instance.SetNewEnemyKnockback(newEnemyKnockBackWater);
@@ -226,13 +254,13 @@ public class Inventory : MonoBehaviour, IScreenObject
         switch (strength)
         {
             case < 1:
-                return "<color=red>" + strength + " X</color>";
+                return "<color=red>" + strength + "X</color>";
 
             case > 1:
                 return "<color=green>" + strength + "X</color>";
 
             default:
-                return "" + strength;
+                return strength + "X";
         }
     }
 

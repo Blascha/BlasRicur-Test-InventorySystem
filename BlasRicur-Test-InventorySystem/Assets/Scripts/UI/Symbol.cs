@@ -7,13 +7,26 @@ public class Symbol : MonoBehaviour
     public SymbolType MySymbolType;
     public static Symbol ActualDraggedSymbol;
     public Slot mySlot;
+    GameObject showSelection;
 
     // Start is called before the first frame update
     public void SetSymbolType(SymbolType type)
     {
         MySymbolType = type;
-
         GetComponent<Image>().sprite = MySymbolType.sprite;
+
+        GameObject circles = Resources.Load<GameObject>("Area of Effect");
+        showSelection = new GameObject("What Will I Affect");
+        showSelection.transform.SetParent(transform);
+
+        foreach(var i in type.effectArea)
+        {
+            GameObject actualCircle = Instantiate(circles);
+            actualCircle.transform.SetParent(showSelection.transform);
+            actualCircle.GetComponent<RectTransform>().anchoredPosition = new Vector2(i.x * 250, i.y* -250);
+        }
+
+        showSelection.SetActive(false);
     }
 
     public void StartDrag()
@@ -24,11 +37,12 @@ public class Symbol : MonoBehaviour
             mySlot.OnPressed();
             return;
         }
-
+        
         //I actually set everyting to be dragged
         ActualDraggedSymbol = this;
         GetComponent<Image>().raycastTarget = false;
         mySlot.assignedSymbol = null;
+        showSelection.SetActive(true);
 
         //This is so that is the one on top of everything
         transform.SetSiblingIndex(transform.parent.childCount - 1);
@@ -41,6 +55,7 @@ public class Symbol : MonoBehaviour
     {
         //I will recalculate all symbol effects after this
         Inventory.Instance.OnChangeSymbol();
+        showSelection.SetActive(false);
 
         //Make it pressable + not moving any more
         GetComponent<Image>().raycastTarget = true;

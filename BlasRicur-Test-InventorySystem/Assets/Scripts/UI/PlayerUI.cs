@@ -4,6 +4,7 @@ using System.Collections;
 
 public class PlayerUI : MonoBehaviour
 {
+    [SerializeField] TMP_Text wave;
     [SerializeField] TMP_Text life;
     [SerializeField] CanvasGroup lostGroup;
     [SerializeField] CanvasGroup wonGroup;
@@ -11,12 +12,20 @@ public class PlayerUI : MonoBehaviour
 
     private void Awake()
     {
+        SpawnManager.Wave = Mathf.Max(PlayerPrefs.GetInt("Wave"),1);
+
         Instance = this;
+        UpdateWave();
     }
 
     public void UpdateLife(int newLife)
     {
         life.text = "" + newLife;
+    }
+
+    public static void UpdateWave()
+    {
+        Instance.wave.text = "Wave: " + SpawnManager.Wave;
     }
 
     public void Lost()
@@ -44,7 +53,7 @@ public class PlayerUI : MonoBehaviour
     IEnumerator OnWon()
     {
         WaitForSeconds wait = new WaitForSeconds(0.02f);
-        for (float i = 1; i > 0; i -= 0.02f)
+        for (float i = 0; i < 1; i += 0.02f)
         {
             wonGroup.alpha = i;
             yield return wait;
@@ -57,6 +66,10 @@ public class PlayerUI : MonoBehaviour
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene(0);
 
-        SpawnManager.NextWave = () => { SpawnManager.Wave++; };
+        SpawnManager.NextWave = () => 
+        {
+            SpawnManager.Wave++;
+            UpdateWave();
+        };
     }
 }

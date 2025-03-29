@@ -54,7 +54,7 @@ public class ModelPlayer : ModelCharacter
     {
         if (!onKnockback)
         {
-            rig.AddForce((Vector2.right * x + Vector2.up * y) * acceleration);
+            rig.AddForce(Vector2.ClampMagnitude((Vector2.right * x + Vector2.up * y),1) * acceleration);
             rig.linearVelocity = Vector2.ClampMagnitude(rig.linearVelocity, maxSpeed);
             visual.Move(x,y);
         }

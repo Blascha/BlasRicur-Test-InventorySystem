@@ -4,7 +4,7 @@ public class VisualPlayer : VisualCharacter
 {
     bool startPlayingWalk;
 
-    public void Move(float x, float y)
+    public override void Move(float x, float y)
     {
         //I could do sprite.flipX = (x < 0), but that would flip it if i´M going left then up (it should stay fliped in that situation)
         if (x < 0)
@@ -26,11 +26,5 @@ public class VisualPlayer : VisualCharacter
             startPlayingWalk = false;
             animator.Play("Idle");
         }
-    }
-
-    public void Die()
-    {
-        animator.Play("Death Anim");
-        Destroy(this);
     }
 }

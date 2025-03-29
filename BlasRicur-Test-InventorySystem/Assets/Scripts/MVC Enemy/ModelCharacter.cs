@@ -11,7 +11,7 @@ public class ModelCharacter : MonoBehaviour
     [SerializeField] protected float maxSpeed = 5;
     protected Rigidbody2D rig;
     [SerializeField] protected bool onKnockback = false;
-    [SerializeField] protected VisualPlayer visual;
+    [SerializeField] protected VisualCharacter visual;
 
     void Awake()
     {
@@ -39,6 +39,7 @@ public class ModelCharacter : MonoBehaviour
 
         onKnockback = true;
         rig.AddForce(direction.normalized * knockback, ForceMode2D.Impulse);
+        visual.Knockback(knockback);
         StartCoroutine(WaitToStopKnockBack());
     }
 
