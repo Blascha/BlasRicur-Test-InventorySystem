@@ -2,16 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ControllerPlayer : MonoBehaviour
+public class ControllerPlayer : MonoBehaviour , IScreenObject
 {
     [SerializeField] ModelPlayer model;
     [SerializeField] Transform cursor;
+    [SerializeField] SymbolType testType;
+    [SerializeField] SymbolType testPlantType;
 
     // Start is called before the first frame update
     void Start()
     {
         if (model == null)
             model = GetComponent<ModelPlayer>();
+
+        ScreenManager.AddObjectToScreen(ScreenManager.Screens.Game, this);
+    }
+
+    bool canFire;
+    public void OnTurnOnScreen()
+    {
+        canFire = true;
+    }
+
+    public void OnTurnOffScreen()
+    {
+        canFire = false;
     }
 
     // Update is called once per frame
@@ -24,7 +39,7 @@ public class ControllerPlayer : MonoBehaviour
     {
         cursor.localPosition = 2 * ((Input.mousePosition/(Screen.width)) - Vector3.one * .5f) + Vector3.forward * 10;
 
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1") && canFire)
         {
             model.Fire((cursor.position - transform.position).normalized);
         }
@@ -32,12 +47,18 @@ public class ControllerPlayer : MonoBehaviour
         if (Input.GetButtonDown("Inventory"))
         {
             if(ScreenManager.activeScreen == ScreenManager.Screens.Menus)
-            {
                 ScreenManager.ChangeScreen(ScreenManager.Screens.Game);
-                return;
-            }
+            else
+                ScreenManager.ChangeScreen(ScreenManager.Screens.Menus);
+        }
 
-            ScreenManager.ChangeScreen(ScreenManager.Screens.Menus);
+        if(Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            Inventory.Instance.MakeNewItem(testType);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            Inventory.Instance.MakeNewItem(testPlantType);
         }
     }
 }

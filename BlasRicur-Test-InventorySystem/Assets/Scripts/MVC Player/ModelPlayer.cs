@@ -20,7 +20,7 @@ public class ModelPlayer : MonoBehaviour
     public void Move(float x, float y)
     {
         rig.AddForce((Vector2.right * x + Vector2.up * y) * acceleration);
-        rig.velocity = Vector2.ClampMagnitude(rig.velocity, maxSpeed);
+        rig.linearVelocity = Vector2.ClampMagnitude(rig.linearVelocity, maxSpeed);
     }
 
     public void Fire(Vector2 direction)
