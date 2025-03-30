@@ -8,7 +8,7 @@ public class ModelCharacter : MonoBehaviour
     [SerializeField] protected float MaxHP = 10;
     [SerializeField] protected float HP = 10;
     [SerializeField] protected float acceleration = 5;
-    [SerializeField] protected float maxSpeed = 5;
+    public float maxSpeed = 5;
     protected Rigidbody2D rig;
     [SerializeField] protected bool onKnockback = false;
     [SerializeField] protected VisualCharacter visual;
@@ -58,6 +58,7 @@ public class ModelCharacter : MonoBehaviour
         rig.constraints = RigidbodyConstraints2D.FreezeAll;
         GetComponent<Collider2D>().enabled = false;
         GetComponent<SpriteRenderer>().enabled = false;
+        Destroy(GetComponent<ControllerEnemy>());
 
         if (Random.Range(0, SpawnManager.Wave * 10) == 1)
             (Instantiate(Resources.Load("Floor Symbol")) as GameObject).transform.position = transform.position;

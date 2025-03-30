@@ -17,9 +17,10 @@ public class Spawner : MonoBehaviour
     {
         yield return new WaitForSeconds(5);
 
+        WaitForSeconds wait = new WaitForSeconds(1 + 1 / SpawnManager.Wave);
         for (int i = 0; i < SpawnManager.Wave * 3; i++)
         {
-            yield return new WaitForSeconds(1);
+            yield return wait;
             OnSpawnEnemie(enemy);
         }
     }
@@ -28,6 +29,7 @@ public class Spawner : MonoBehaviour
     {
         GameObject instantiated = Instantiate(enemy);
         instantiated.transform.position = transform.position;
+        instantiated.GetComponent<ModelCharacter>().maxSpeed = 0.1f + SpawnManager.Wave * .1f;
         SpawnManager.Enemies.Add(instantiated);
     }
 }

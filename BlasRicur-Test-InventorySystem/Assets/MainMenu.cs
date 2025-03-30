@@ -29,4 +29,10 @@ public class MainMenu : MonoBehaviour
     {
         Application.Quit();
     }
+
+    public void DeleteSaves()
+    {
+        PlayerPrefs.DeleteAll();
+        loadButton.interactable = false;
+    }
 }

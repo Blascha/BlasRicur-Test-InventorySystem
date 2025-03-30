@@ -80,6 +80,8 @@ public class Inventory : MonoBehaviour, IScreenObject
             if (type != null)
                 Inventory.Instance.MakeNewItem(type, slots[x].GetComponent<Slot>());
         }
+
+        OnChangeSymbol();
     }
 
     private void OnDestroy()

@@ -12,7 +12,7 @@ public class PlayerUI : MonoBehaviour
 
     private void Awake()
     {
-        SpawnManager.Wave = Mathf.Max(PlayerPrefs.GetInt("Wave"),1);
+        SpawnManager.Wave = MainMenu.PlayingSave ? Mathf.Max(PlayerPrefs.GetInt("Wave"), 1) : 1;
 
         Instance = this;
         UpdateWave();

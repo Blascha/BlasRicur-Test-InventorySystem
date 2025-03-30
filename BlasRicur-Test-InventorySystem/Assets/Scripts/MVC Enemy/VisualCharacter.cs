@@ -11,7 +11,7 @@ public class VisualCharacter : MonoBehaviour
     {
         oldColor = sprite.color;
     }
-    public void Knockback(float Multiplyier)
+    public virtual void Knockback(float Multiplyier)
     {
         StopCoroutine("KnockbackAnimation");
         StartCoroutine(KnockbackAnimation(1 / Multiplyier));
