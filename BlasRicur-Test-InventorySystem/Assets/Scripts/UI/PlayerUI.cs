@@ -26,6 +26,9 @@ public class PlayerUI : MonoBehaviour
     public static void UpdateWave()
     {
         Instance.wave.text = "Wave: " + SpawnManager.Wave;
+
+        if (SpawnManager.Wave > 1)
+            Instance.GetComponent<AudioSource>().Play();
     }
 
     public void Lost()

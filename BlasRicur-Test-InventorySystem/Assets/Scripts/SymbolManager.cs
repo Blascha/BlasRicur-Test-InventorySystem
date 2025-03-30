@@ -8,13 +8,11 @@ public static class SymbolManager
     public static void FindAllSymbolTypes()
     {
         SymbolsAndNames = new Dictionary<string, SymbolType>();
-        var allSymbolsPaths = AssetDatabase.FindAssets("t: SymbolType");
+        var allSymbolsPaths = Resources.LoadAll<SymbolType>("Symbols");
 
         foreach (var i in allSymbolsPaths)
         {
-            var SOpath = AssetDatabase.GUIDToAssetPath(i);
-            var actualSymbol = AssetDatabase.LoadAssetAtPath<SymbolType>(SOpath);
-            SymbolsAndNames.Add(actualSymbol.name,actualSymbol);
+            SymbolsAndNames.Add(i.name,i);
         }
     }
 

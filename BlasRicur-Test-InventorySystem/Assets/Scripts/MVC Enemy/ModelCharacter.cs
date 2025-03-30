@@ -17,6 +17,7 @@ public class ModelCharacter : MonoBehaviour
     void Awake()
     {
         rig = GetComponent<Rigidbody2D>();
+        Cursor.visible = false;
     }
 
     public virtual void Move(float x, float y)
@@ -52,6 +53,7 @@ public class ModelCharacter : MonoBehaviour
 
     protected virtual void Die()
     {
+        Cursor.visible = true;
         SpawnManager.EnemyDeath(gameObject);
         GetComponent<AudioSource>().Play();
         particles.Play();
