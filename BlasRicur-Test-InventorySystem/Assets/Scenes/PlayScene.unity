@@ -232,6 +232,7 @@ MonoBehaviour:
   maxSpeed: 10
   onKnockback: 0
   visual: {fileID: 1165010834}
+  particles: {fileID: 0}
   projectile: {fileID: 5427863840507551751, guid: e38851ab7e1114f48ae88eeecc056dc5, type: 3}
   Controler: {fileID: 0}
 --- !u!114 &131906296
@@ -1210,7 +1211,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &634757689
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -96689,7 +96690,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &1921916461
 SpriteRenderer:
   m_ObjectHideFlags: 0

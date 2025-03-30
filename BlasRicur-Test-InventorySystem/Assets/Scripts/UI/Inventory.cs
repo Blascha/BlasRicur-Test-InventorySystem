@@ -61,7 +61,7 @@ public class Inventory : MonoBehaviour, IScreenObject
 
         SpawnManager.NextWave += OnSave;
 
-        if (!load)
+        if (!MainMenu.PlayingSave)
             return;
 
         //I will load every symbol on every slot

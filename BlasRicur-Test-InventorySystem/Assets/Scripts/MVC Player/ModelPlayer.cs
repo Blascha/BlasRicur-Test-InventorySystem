@@ -90,7 +90,7 @@ public class ModelPlayer : ModelCharacter
     {
         PlayerUI.Instance.Lost();
         died = true;
-        rig.constraints = RigidbodyConstraints2D.FreezePosition;
+        rig.constraints = RigidbodyConstraints2D.FreezeAll;
         Destroy(Controler);
         visual.Die();
     }
@@ -98,7 +98,7 @@ public class ModelPlayer : ModelCharacter
     public void OnWin()
     {
         died = true;
-        rig.constraints = RigidbodyConstraints2D.FreezePosition;
+        rig.constraints = RigidbodyConstraints2D.FreezeAll;
         Destroy(Controler);
     }
 

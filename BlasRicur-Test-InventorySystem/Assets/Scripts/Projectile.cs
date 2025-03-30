@@ -7,7 +7,7 @@ public class Projectile : MonoBehaviour
     [SerializeField] float speed;
     [SerializeField] Animator hitAnimator;
     [SerializeField] ParticleSystem particles;
-    [SerializeField] AudioSource audio;
+    [SerializeField] AudioSource audioSource;
 
     public float Damage;
     public float ShotResilience;
@@ -37,7 +37,7 @@ public class Projectile : MonoBehaviour
             GetComponent<BoxCollider2D>().enabled = false;
             particles.Play();
             hitAnimator.Play("IdleVFX");
-            audio.Play();
+            audioSource.Play();
             speed = 0;
         }
     }
@@ -49,7 +49,7 @@ public class Projectile : MonoBehaviour
 
     IEnumerator WaitAndDestroy()
     {
-        yield return new WaitForSeconds(audio.clip.length);
+        yield return new WaitForSeconds(audioSource.clip.length);
         Destroy(gameObject);
     }
 }

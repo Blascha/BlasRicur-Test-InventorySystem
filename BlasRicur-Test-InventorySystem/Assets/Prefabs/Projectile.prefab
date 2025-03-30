@@ -50,7 +50,7 @@ MonoBehaviour:
   speed: 3
   hitAnimator: {fileID: 5874296080330485561}
   particles: {fileID: 7614670202619998879}
-  audio: {fileID: 4231707668550226317}
+  audioSource: {fileID: 4231707668550226317}
   Damage: 1
   ShotResilience: 1
   enemyKnockback: 3
